@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import os
+import re
+
 def puller():
     print '\nHey Dudes, this is script to pull sequences of chosen frames into separate folders...'
     print
@@ -11,14 +14,14 @@ def puller():
     dstpath = raw_input("Please enter the destination path for the sequences of pulled out frames: ").strip()
     print "You have entered: ", dstpath + '\n'
 
-    firstframe = getFirstFrame()
-    endframe = getEndFrame()
-    print
+    # firstframe = getFirstFrame()
+    # endframe = getEndFrame()
+    # print
     padding = getPadding()
-
-    print '\nPlease wait while the chosen files are being copied...'
-
-    wantedcount = 0
+    #
+    # print '\nPlease wait while the chosen files are being copied...'
+    #
+    # wantedcount = 0
 
     for root, dirs, frames in os.walk(sequencepath):
         frames.sort()
@@ -32,6 +35,16 @@ def puller():
         match = re.search('(.*?)([0-9]{%d})$' % padding, framename)
 
         print frames
+
+def getPadding():
+    padding = raw_input("Number of digits in frame name (padding): ").strip()
+    try:
+        return int(padding)
+    except Exception, err:
+        print '\nAre you sure you entered a number? Please see error printed below and try again.'
+        print str(err) + '\n'
+        getPadding()
+
 
 if __name__ == '__main__':
 	puller()
